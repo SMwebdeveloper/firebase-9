@@ -11,8 +11,9 @@ import {
   where,
   orderBy,
   serverTimestamp,
-  updateDoc
+  updateDoc,
 } from "firebase/firestore";
+import { getAuth } from "firebase/auth"
 
 const firebaseConfig = {
   apiKey: "AIzaSyCigry1OjPlDVj9Uo_EGtnb4NP4wHbIYJE",
@@ -28,12 +29,13 @@ initializeApp(firebaseConfig);
 
 // init services
 const db = getFirestore();
+const auth = getAuth()
 
 // collection ref
 const colRef = collection(db, "books");
 
 // queries
-const q = query(colRef,  orderBy("createdAt"))
+const q = query(colRef, orderBy("createdAt"));
 // real time collection data
 onSnapshot(q, (snapshot) => {
   let books = [];
@@ -51,7 +53,7 @@ addBookForm.addEventListener("submit", (e) => {
   addDoc(colRef, {
     title: addBookForm.title.value,
     author: addBookForm.author.value,
-    createdAt: serverTimestamp()
+    createdAt: serverTimestamp(),
   }).then(() => {
     addBookForm.reset();
   });
@@ -70,23 +72,22 @@ deleteBookForm.addEventListener("submit", (e) => {
 });
 
 // get single document
-const docRef = doc(db, 'books', 'nnHm16rWPTFIUdr6nYX5')
+const docRef = doc(db, "books", "nnHm16rWPTFIUdr6nYX5");
 
-onSnapshot(docRef, (doc) =>{
-    console.log(doc.data(), doc.id)
-})
+onSnapshot(docRef, (doc) => {
+  console.log(doc.data(), doc.id);
+});
 
 // updating a document
-const updateForm = document.querySelector('.update')
-updateForm.addEventListener('submit', (e) => {
-  e.preventDefault()
+const updateForm = document.querySelector(".update");
+updateForm.addEventListener("submit", (e) => {
+  e.preventDefault();
 
-  let docRef = doc(db, 'books', updateForm.id.value)
-  
+  let docRef = doc(db, "books", updateForm.id.value);
+
   updateDoc(docRef, {
-    title: 'update title'
-  })
-  .then(() => {
-    updateForm.reset()
-  })
-})
+    title: "update title",
+  }).then(() => {
+    updateForm.reset();
+  });
+});
