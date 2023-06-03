@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
+  getDoc,
   collection,
   onSnapshot,
   addDoc,
@@ -66,3 +67,10 @@ deleteBookForm.addEventListener("submit", (e) => {
     deleteBookForm.reset();
   });
 });
+
+// get single document
+const docRef = doc(db, 'books', 'nnHm16rWPTFIUdr6nYX5')
+
+onSnapshot(docRef, (doc) =>{
+    console.log(doc.data(), doc.id)
+})
